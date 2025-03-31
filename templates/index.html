@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Dashboard</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .length-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .length-option {
+            flex: 1;
+        }
+        
+        .length-option input[type="radio"] {
+            display: none;
+        }
+        
+        .length-option label {
+            display: block;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #e9ecef;
+        }
+        
+        .length-option input[type="radio"]:checked + label {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .length-option label:hover {
+            border-color: var(--accent);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button i {
+            font-size: 18px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #3aa8d1;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #e51778;
+        }
+        
+        .result-container {
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .result h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .result-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .error {
+            color: var(--danger);
+            background-color: #fdd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .file-input-container {
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .length-options {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <h1>AI-Powered Resume Analysis & Summarization</h1>
+    
+    <!-- Text Summarization Section -->
+    <div class="section">
+        <h2><i class="fas fa-file-contract"></i> Text Summarization</h2>
+        <form action="/Summarize" method="POST" id="summarizeForm">
+            <div class="input-group">
+                <label for="data">Text to summarize:</label>
+                <textarea name="data" id="data" placeholder="Paste your text here..." required></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Summary length:</label>
+                <div class="length-options">
+                    <div class="length-option">
+                        <input type="radio" id="short" name="length" value="short" checked>
+                        <label for="short"><i class="fas fa-align-left"></i> Short (Concise)</label>
+                    </div>
+                    <div class="length-option">
+                        <input type="radio" id="medium" name="length" value="medium">
+                        <label for="medium"><i class="fas fa-align-center"></i> Medium (Balanced)</label>
+                    </div>
+                    <div class="length-option">
+                        <input type="radio" id="long" name="length" value="long">
+                        <label for="long"><i class="fas fa-align-justify"></i> Long (Detailed)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-magic"></i> Summarize
+                </button>
+                <button type="reset" class="btn-secondary" id="resetSummarize">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </form>
+        
+        {% if summary_result %}
+        <div class="result-container">
+            <div class="result">
+                <div class="result-actions">
+                    <button class="btn-success" onclick="copyToClipboard('summaryText')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="btn-danger" onclick="clearSummary()">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <h3>Summary Result:</h3>
+                <p id="summaryText">{{ summary_result }}</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if summary_error %}
+        <div class="error">
+            <i class="fas fa-exclamation-circle"></i> {{ summary_error }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Resume Screening Section -->
+    <div class="section">
+        <h2><i class="fas fa-file-alt"></i> Resume Screening</h2>
+        <form action="/ScreenResume" method="POST" enctype="multipart/form-data" id="resumeForm">
+            <div class="file-input-container">
+                <label for="resume">Upload your resume (PDF or TXT):</label>
+                <input type="file" name="resume" id="resume" accept=".pdf,.txt" required>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-search"></i> Analyze Resume
+                </button>
+                <button type="reset" class="btn-secondary">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+        </form>
+        
+        {% if resume_error %}
+        <div class="error">
+            <i class="fas fa-exclamation-circle"></i> {{ resume_error }}
+        </div>
+        {% endif %}
+        
+        {% if resume_result %}
+        <div class="result-container">
+            <div class="result">
+                <h3>Analysis Result:</h3>
+                <p>{{ resume_result }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Copy to clipboard function
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                // Show copied feedback
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+        
+        // Clear summary result
+        function clearSummary() {
+            const resultContainer = document.querySelector('.result-container');
+            if (resultContainer) {
+                resultContainer.remove();
+                // You might want to add code here to clear the server-side result as well
+                // by making an AJAX call or refreshing the page without the result parameter
+            }
+        }
+        
+        // Reset summarize form
+        document.getElementById('resetSummarize')?.addEventListener('click', function() {
+            document.getElementById('data').value = '';
+            document.querySelector('input[name="length"][value="short"]').checked = true;
+        });
+    </script>
+</body>
+</html>

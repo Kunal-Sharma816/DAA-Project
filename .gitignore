@@ -1,0 +1,51 @@
+
+# Byte-compiled / optimized / DLL files
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+
+# Virtual environment
+venv/
+.env
+*.env
+.envrc
+
+# Flask & Django secret keys or configs
+instance/
+config.py
+settings.py
+
+# Django stuff:
+db.sqlite3
+media/
+staticfiles/
+
+# Logs & Debug files
+logs/
+*.log
+*.out
+*.err
+
+# Dependencies
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pytest / Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Render-specific
+# If you use Render's auto-deployment
+render.yaml
