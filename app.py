@@ -89,6 +89,8 @@ def Summarize():
         return render_template("index.html", summary_result=output["summary_text"])
     except Exception as e:
         return render_template("index.html", summary_error=str(e))
+    
+    
 @app.route("/ScreenResume", methods=["POST"])
 def ScreenResume():
     if 'resume' not in request.files:
@@ -113,4 +115,5 @@ def ScreenResume():
     return render_template("index.html", resume_result=category_name)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import os
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
